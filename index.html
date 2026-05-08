@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Finance Home</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green: #1D9E75;
+    --green-dark: #0F6E56;
+    --green-light: #E1F5EE;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --blue: #185FA5;
+    --blue-light: #E6F1FB;
+    --red: #A32D2D;
+    --red-light: #FCEBEB;
+    --bg: #F8F7F2;
+    --card: #FFFFFF;
+    --text: #1a1a18;
+    --muted: #6B6B65;
+    --border: rgba(0,0,0,0.1);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  /* NAV */
+  nav {
+    background: var(--card);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky; top: 0; z-index: 100;
+  }
+  .nav-brand { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--green-dark); text-decoration: none; }
+  .nav-links { display: flex; gap: 8px; }
+  .nav-links a {
+    padding: 8px 16px; border-radius: 8px; text-decoration: none;
+    font-size: 14px; font-weight: 500; color: var(--muted); transition: all 0.2s;
+  }
+  .nav-links a:hover, .nav-links a.active { background: var(--green-light); color: var(--green-dark); }
+
+  /* HERO */
+  .hero {
+    padding: 5rem 2rem 3rem;
+    max-width: 900px; margin: 0 auto; text-align: center;
+  }
+  .hero-tag {
+    display: inline-block; background: var(--green-light); color: var(--green-dark);
+    font-size: 12px; font-weight: 500; padding: 4px 14px; border-radius: 20px;
+    margin-bottom: 1.5rem; letter-spacing: 0.5px; text-transform: uppercase;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(36px, 6vw, 60px);
+    font-weight: 700; line-height: 1.15;
+    color: var(--text); margin-bottom: 1.25rem;
+  }
+  .hero h1 span { color: var(--green); }
+  .hero p { font-size: 18px; color: var(--muted); max-width: 560px; margin: 0 auto 2.5rem; line-height: 1.7; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--green); color: #fff; padding: 14px 28px;
+    border-radius: 10px; text-decoration: none; font-weight: 500; font-size: 15px;
+    border: none; cursor: pointer; transition: all 0.2s; display: inline-block;
+  }
+  .btn-primary:hover { background: var(--green-dark); transform: translateY(-1px); }
+  .btn-secondary {
+    background: var(--card); color: var(--text); padding: 14px 28px;
+    border-radius: 10px; text-decoration: none; font-weight: 500; font-size: 15px;
+    border: 1px solid var(--border); cursor: pointer; transition: all 0.2s; display: inline-block;
+  }
+  .btn-secondary:hover { background: var(--bg); transform: translateY(-1px); }
+
+  /* STATS STRIP */
+  .stats-strip {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1px; background: var(--border); border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border); margin: 2rem 0;
+  }
+  .stat-item {
+    background: var(--card); padding: 1.5rem 2rem; text-align: center;
+  }
+  .stat-num { font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--green); }
+  .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* CARDS */
+  .cards-section { padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .cards-section h2 { font-family: 'Playfair Display', serif; font-size: 28px; margin-bottom: 1.5rem; }
+  .cards-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+
+  .feature-card {
+    background: var(--card); border-radius: 16px; border: 1px solid var(--border);
+    padding: 2rem; text-decoration: none; color: inherit;
+    transition: all 0.25s; display: block;
+  }
+  .feature-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.08); }
+  .card-icon {
+    width: 52px; height: 52px; border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px; margin-bottom: 1.25rem;
+  }
+  .icon-green { background: var(--green-light); }
+  .icon-amber { background: var(--amber-light); }
+  .card-title { font-size: 18px; font-weight: 500; margin-bottom: 0.5rem; }
+  .card-desc { font-size: 14px; color: var(--muted); line-height: 1.6; }
+  .card-arrow { margin-top: 1.25rem; font-size: 13px; font-weight: 500; color: var(--green); }
+
+  /* QUICK SUMMARY */
+  .summary-section { padding: 2rem; max-width: 900px; margin: 0 auto; }
+  .summary-section h2 { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 1rem; }
+  .summary-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; }
+  .summary-card {
+    background: var(--card); border-radius: 12px; border: 1px solid var(--border);
+    padding: 1.25rem 1rem; text-align: center;
+  }
+  .summary-val { font-size: 24px; font-weight: 500; font-family: 'Playfair Display', serif; }
+  .summary-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+  .val-green { color: var(--green); }
+  .val-amber { color: var(--amber); }
+  .val-blue { color: var(--blue); }
+
+  footer {
+    text-align: center; padding: 2rem; font-size: 13px; color: var(--muted);
+    border-top: 1px solid var(--border); margin-top: 3rem;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="index.html">MyFinance</a>
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="expenses.html">Expenses</a>
+    <a href="savings.html">Savings</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-tag">Your Personal Finance Dashboard</div>
+  <h1>Manage Your Money<br>with <span>Clarity</span></h1>
+  <p>Track daily home expenses and watch Jayanthi's 40-year savings grow — all in one simple, beautiful place.</p>
+  <div class="hero-btns">
+    <a href="expenses.html" class="btn-primary">Track Expenses</a>
+    <a href="savings.html" class="btn-secondary">View Savings</a>
+  </div>
+</div>
+
+<div class="stats-strip">
+  <div class="stat-item">
+    <div class="stat-num" id="stat-total-exp">₹0</div>
+    <div class="stat-label">Total Expenses</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="stat-month-exp">₹0</div>
+    <div class="stat-label">This Month</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="stat-savings-bal">₹0</div>
+    <div class="stat-label">Savings Balance</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" id="stat-savings-pct">0%</div>
+    <div class="stat-label">Goal Progress</div>
+  </div>
+</div>
+
+<div class="cards-section">
+  <h2>What would you like to do?</h2>
+  <div class="cards-grid">
+    <a href="expenses.html" class="feature-card">
+      <div class="card-icon icon-green">🏠</div>
+      <div class="card-title">Home Expenses</div>
+      <div class="card-desc">Add, edit and delete your daily household expenses. Track food, rent, transport, utilities and more by category.</div>
+      <div class="card-arrow">Go to Expenses →</div>
+    </a>
+    <a href="savings.html" class="feature-card">
+      <div class="card-icon icon-amber">💰</div>
+      <div class="card-title">Jayanthi Savings</div>
+      <div class="card-desc">Log your daily ₹100 savings. Track progress toward the 40-year goal of ₹14,60,000 with milestone breakdowns.</div>
+      <div class="card-arrow">Go to Savings →</div>
+    </a>
+  </div>
+</div>
+
+<div class="summary-section">
+  <h2>Quick Overview</h2>
+  <div class="summary-grid">
+    <div class="summary-card">
+      <div class="summary-val val-green" id="ov-savings-bal">₹0</div>
+      <div class="summary-label">Savings Balance</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-val val-amber" id="ov-month-exp">₹0</div>
+      <div class="summary-label">Month Expenses</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-val val-blue" id="ov-total-entries">0</div>
+      <div class="summary-label">Expense Entries</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-val val-green" id="ov-sav-days">0</div>
+      <div class="summary-label">Days Saved</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-val" id="ov-goal-left">₹0</div>
+      <div class="summary-label">Goal Remaining</div>
+    </div>
+    <div class="summary-card">
+      <div class="summary-val val-green" id="ov-years">0</div>
+      <div class="summary-label">Equiv. Years</div>
+    </div>
+  </div>
+</div>
+
+<footer>MyFinance &copy; 2024 &mdash; Built for your family's financial peace of mind.</footer>
+
+<script>
+function fmt(n){ return '₹'+Math.round(n).toLocaleString('en-IN'); }
+function loadStats(){
+  const expenses = JSON.parse(localStorage.getItem('hexp')||'[]');
+  const savings = JSON.parse(localStorage.getItem('jsav')||'[]');
+  const thisMonth = new Date().toISOString().slice(0,7);
+  const totalExp = expenses.reduce((s,e)=>s+e.amount,0);
+  const monthExp = expenses.filter(e=>e.date.startsWith(thisMonth)).reduce((s,e)=>s+e.amount,0);
+  const totalDep = savings.filter(e=>e.type==='savings').reduce((s,e)=>s+e.amount,0);
+  const savBal = savings.reduce((s,e)=>s+(e.type==='savings'?e.amount:-e.amount),0);
+  const goal = 100*365*40;
+  const pct = (totalDep/goal*100).toFixed(1);
+  const daysEq = Math.round(totalDep/100);
+  const yrsEq = (totalDep/(100*365)).toFixed(1);
+
+  document.getElementById('stat-total-exp').textContent = fmt(totalExp);
+  document.getElementById('stat-month-exp').textContent = fmt(monthExp);
+  document.getElementById('stat-savings-bal').textContent = fmt(savBal);
+  document.getElementById('stat-savings-pct').textContent = pct+'%';
+  document.getElementById('ov-savings-bal').textContent = fmt(savBal);
+  document.getElementById('ov-month-exp').textContent = fmt(monthExp);
+  document.getElementById('ov-total-entries').textContent = expenses.length;
+  document.getElementById('ov-sav-days').textContent = daysEq;
+  document.getElementById('ov-goal-left').textContent = fmt(Math.max(0,goal-totalDep));
+  document.getElementById('ov-years').textContent = yrsEq;
+}
+loadStats();
+</script>
+</body>
+</html>
